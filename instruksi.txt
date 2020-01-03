@@ -1,0 +1,17 @@
+Aturan permainan adalah sebagai berikut:
+1. Ketika pemain sudah mendapat giliran bermain, pemain harus melempar dadu dan menggerakan bidak nya atau mengeluarkan bidak nya dari home base.
+2.  Pemain harus mendapatkan jumlah enam angka dadu dari hasil pelemparan untuk mengeluarkan bidak dari home base.
+3. Pemain menentukan bidak mana yang akan dikeluarkan sesuai dengan nomor bidak yang tertera pada bidak miliknya. Jika tidak mendapat jumlah enam angka dadu, pemain
+   tidak dapat mengeluarkan bidaknya.
+4. Bidak yang dipilih oleh pemain, akan berpindah petak dimulai dari petak setelah base sesuai dengan jumlah angka dadu yang didapat. Kemudian dilanjutkan dengan
+   pemain lainnya.
+5. Ketika user sudah mengeluarkan lebih dari 1 bidak, dan user telah melempar dadu. User dapat memilih bidak mana yang harus berpindah petak.
+7. Jika bidak berhenti di petak yang telah terisi oleh bidak lawan, maka bidak lawan diinyatakan “mati” dan akan kembali ke home base milik lawan.
+8. Jika user berhenti pada petak yang telah diisi dengan bidak milik sendiri lainnya, bidak tersebut kemudian akan menempati petak yang sama tanpa harus ada salah
+   satu bidak yang kembali ke home base.
+9. Jika bidak sudah hampir melewati satu putaran sesuai lintasan dengan selisih 1 petak, maka bidak akan berbelok dan akan mengikuti lintasan yang sesuai dengan
+   warna bidak dan home base nya.
+10. Ketika bidak sudah berada di petak pada lintasan menuju finish, bidak tidak akan berpindah petak jika jumlah angka dadu yang dilempar lebih besar dari jumlah 
+    sisa  petak menuju finish.
+Contoh: bidak hanya perlu tiga langkah lagi menuju finish, tetapi jumlah yang dihasilkan adalah empat dadu, maka bidak akan diam di petak yang sedang dipijak. Dan 
+        seterusnya sampai bidak selesai. 
