@@ -19,6 +19,10 @@ struct player{
 
 struct player pemain[];
 
+// Nama Modul : GoToXY
+// Jenis Modul : Procedure
+// Deskripsi : Modul untuk menentukan letak penempatan apapun yang di print atau di tampilkan di layar user.
+// Author : https://www.daniweb.com/programming/software-development/threads/360984/need-help-understanding-gotoxy
 GoToXY(int x, int y){
 	COORD coord;
 	coord.X = x;
@@ -26,10 +30,19 @@ GoToXY(int x, int y){
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-int MainMenu();
+void MainMenu();
 int StartGame();
 
-void PilihBidak(int *nomorbidak){ // Author : Ali
+
+// Nama Modul : PilihBidak
+// Jenis Modul : Procedure
+// Deskripsi : Modul untuk mengeluarkan langkah selanjutnya setelah pemain mendapatkan angka dadu 6 yang kedua kalinya atau ketika pemain mendapatkan 6 angka dadu dan sudah ada bidak pemain di lintasan.
+// Inisial State :  Pemain mendapat angka dadu dan bidak pemain masih berada di petak semula.
+// Final State : Terpilih langkah selanjutnya, diantara pengeluaran bidak atau penggerakan bidak.
+// Modul Pemanggil : Procedure_PlayerUser()
+// Modul yang Dipanggil : Procedure_GoToXY()
+// Author : Ali
+void PilihBidak(int *nomorbidak){
 	bool sudahmemilih = false;
 	while(!sudahmemilih){
 		int nomor;
@@ -42,8 +55,16 @@ void PilihBidak(int *nomorbidak){ // Author : Ali
 		}
 	}
 }
-					
-void GameOver(int pemenang){ //Author : Farra
+		
+// Nama Modul : GameOver
+// Jenis Modul : Procedure
+// Dekripsi : Modul untuk menampilkan tampilan "Selamat Kamu Menang" di layar user yang berarti bahwa gameover untuk pemain komputer.Atau jika semua bidak dari salah satu komputer lebih dulu masuk finish maka di layar akan tampil: "Kamu Kalah".
+// Initial State : Layar Kosong
+// Final State : Modul untuk menampilkan "Kamu Kalah" atau  "Selamat kamu menang" di layar user.
+// Modul Pemanggil : Function_StartGame()
+// Modul yang Dipanggil : Procedure_GoToXY(), Function_MainMenu(), Procedure_PenentuWarna()
+// Author : Farra
+void GameOver(int pemenang){
 	system("cls");
 	if (pemenang == 0){
 		sleep(1);
@@ -51,18 +72,25 @@ void GameOver(int pemenang){ //Author : Farra
 		GoToXY(27, 5); printf(" / __| __| |    /_\\ |  \\/  | /_\\_   _| | |/ /  /_\\ |  \\/  | | | | |  \\/  | __| \\| | /_\\ | \\| |/ __| | | |\n");
 		GoToXY(27, 6); printf(" \\__ \\ _|| |__ / _ \\| |\\/| |/ _ \\| |   | ' <  / _ \\| |\\/| | |_| | | |\\/| | _|| .` |/ _ \\| .` | (_ |_|_|_|\n");
 		GoToXY(27, 7); printf(" |___/___|____/_/ \\_\\_|  |_/_/ \\_\\_|   |_|\\_\\/_/ \\_\\_|  |_|\\___/  |_|  |_|___|_|\\_/_/ \\_\\_|\\_|\\___(_|_|_)\n");
-	}
-//	if (pemenang == 1){
-	//	GoToXY(27, 8); printf(" _  __   _   __  __ _   _   _  __   _   _      _   _  _");
-	//	GoToXY(27, 9); printf("| |/ /  /_\\ |  \\/  | | | | | |/ /  /_\\ | |    /_\\ | || |");
-	//	GoToXY(27, 10); printf("| ' <  / _ \\| |\\/| | |_| | | ' <  / _ \\| |__ / _ \\| __ |");
-	//	GoToXY(27, 11); printf("|_|\\_\\/_/ \\_\\_|  |_|\\___/  |_|\\_\\/_/ \\_\\____/_/ \\_\\_||_|");
-	}
+	}else{
+		GoToXY(27, 8); printf(" _  __   _   __  __ _   _   _  __   _   _      _   _  _");
+		GoToXY(27, 9); printf("| |/ /  /_\\ |  \\/  | | | | | |/ /  /_\\ | |    /_\\ | || |");
+		GoToXY(27, 10); printf("| ' <  / _ \\| |\\/| | |_| | | ' <  / _ \\| |__ / _ \\| __ |");
+		GoToXY(27, 11); printf("|_|\\_\\/_/ \\_\\_|  |_|\\___/  |_|\\_\\/_/ \\_\\____/_/ \\_\\_||_|");
+}
 	getch();
 	MainMenu();
 }
 
-void PembunuhBidak(int playerke, int nomorbidak){ //Author : Ali
+// Nama Modul : PembunuhBidak
+// Jenis Modul : Procedure
+// Deskripsi : Modul dieksekusi pada saat bidak pemain yang mendapat giliran bermain menempati petak yang sudah ditempati bidak lawan. (bidak lawan akan dikembalikan ke home base-nya).
+// Inisial State : Bidak pemain yang sedang mendapat giliran bermain menempati petak yang sudah terisi oleh bidak lawan.
+// Final State : Bidak lawan kembali ke homebase nya
+// Modul Pemanggil : Procedure_PlayerUser(), Procedure_PlayerKomputer1(), Procedure_PlayerKomputer2(), & Procedure_PlayerKomputer3
+// Modul yang Dipanggil : -
+// Author : Ali
+void PembunuhBidak(int playerke, int nomorbidak){
 	int i, j;
 	for (i=0; i<4; i++){
 		for (j = 0; j<4; j++){
@@ -167,23 +195,37 @@ void PembunuhBidak(int playerke, int nomorbidak){ //Author : Ali
 		}
 	}
 }
-					
-void PenentuPemenang(bool *menang, int *pemenang, int giliran){ // Author : Ali
-	int h=0,i;
-	while (!(pemain[h].giliran == giliran)){
-		h+=1;
-	}		
+	
+// Nama Modul : PenentuPemenang	
+// Jenis Modul : Procedure
+// Deskripsi : 	Ketika ada pemain yang semua bidaknya sudah menempati petak finish maka permainan selesai.
+// Initial State : Belum ada pemain yang menjadi pemenang.
+// Final State : Tampilan "Selamat kamu menang" atau "Game Over".
+// Modul Pemanggil : Function_StartGame()
+// Modul yang Dipanggil -
+// Author : Ali
+void PenentuPemenang(bool *menang, int *pemenang, int playerke){
+	int i;		
 	for (i=0; i<4; i++){
-		if (pemain[h].bidakdifinish[i] == false){
+		if (pemain[playerke].bidakdifinish[i] == false){
 			*menang = false;
 			return;
 		}else {
 			*menang = true;
-			*pemenang =  h;
+			*pemenang =  playerke;
 		}
 	}		
 }
-int PenggerakBidak(int playerke, int nomorbidak, int dadu){ //Author : Ali
+
+// Nama Modul : PenggerakBidak
+// Jenis Modul : Procedure
+// Deskripsi : Modul untuk menggerakan bidak pemain.
+// Initial State : Bidak berada dalam petak.
+// Final State : Bidak berpindah petak.
+// Modul Pemanggil : Procedure_PlayerUser(), Procedure_PlayerKomputer1(), Procedure_PlayerKomputer2(), & Procedure_PlayerKomputer3
+// Modul yang Dipanggil : -
+// Author : Ali
+void PenggerakBidak(int playerke, int nomorbidak, int dadu){
 if(playerke == 0 && pemain[playerke].posisibidak[nomorbidak].X == 49 && pemain[playerke].posisibidak[nomorbidak].Y == 24){
 		pemain[playerke].posisibidak[nomorbidak].X = 56;
 		pemain[playerke].posisibidak[nomorbidak].Y = 24;
@@ -278,7 +320,16 @@ if(playerke == 0 && pemain[playerke].posisibidak[nomorbidak].X == 49 && pemain[p
 		pemain[playerke].posisibidak[nomorbidak].Y += 3;
 	}
 }
-int KeluarHomeBase(int playerke, int nomorbidak){ //Author : Farra & Ali
+
+// Nama Modul : KeluarHomeBase
+// Jenis Modul : Procedure
+// Deskripsi : Modul untuk mengeluarkan bidak pemain dari home base.
+// Initial State : Bidak berada dalam sebuah petak di homebase
+// Final State : Bidak pemain berada di lintasan pada papan permainan
+// Modoul Pemanggil : Procedure_PlayerUser(), Procedure_PlayerKomputer1(), Procedure_PlayerKomputer2(), & Procedure_PlayerKomputer3
+// Modul yang Dipanggil : -
+// Author : Farra & Ali
+void KeluarHomeBase(int playerke, int nomorbidak){
 	if (playerke == 0){
 		pemain[playerke].posisibidak[nomorbidak].X = 21;
 		pemain[playerke].posisibidak[nomorbidak].Y = 21;
@@ -301,12 +352,26 @@ int KeluarHomeBase(int playerke, int nomorbidak){ //Author : Farra & Ali
 	}
 }
 
+// Nama Modul : PenentuWarna
+// Jenis Modul : Procedure
+// Dekripsi :Modul untuk menentukan warna yang akan ditampilkan pada layar
+// Modul Pemanggil : Procedure_TampilPapanPermainan(), Procedure_Opening(), Procedure_RandomDadu()
+// Author : Laras & Nauval
 void PenentuWarna(unsigned short color){ // Author : Farra & Ali
 HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
 
 SetConsoleTextAttribute(hCon,color);
 }
-void RandomDadu(int angkadadu){ //Author : Farra
+
+// Nama Modul : RandomDadu
+// Jenis Modul : Procedure
+// Deskripsi : Modul untuk mengeluarkan jumlah angka dadu yang ditentukan secara random dan akan dipakai untuk menggerakkan bidak.
+// Initial State : Belum ada tampilan angka dadu yang di dapat oleh pemain yang mendapat giliran.
+// Final State : Tampilnya jumlah angka mata dadu yang didapat oleh pemain yang mendapat giliran. 
+// Modul Pemanggil : Procedure_PlayerUser(), Procedure_PlayerKomputer1(), Procedure_PlayerKomputer2(), & Procedure_PlayerKomputer3
+// Modul yang Dipanggil : Procedure_PenentuWarna(), Procedure_GoToXY()
+// Author : Farra
+void RandomDadu(int angkadadu){
 	switch(angkadadu) {
 	case 0 :
 	GoToXY(135,10);printf(" ___________");
@@ -379,7 +444,16 @@ void RandomDadu(int angkadadu){ //Author : Farra
 	break;
 	}
 }
-int * PenentuUrutan(int urutanpemain[], int jumlahpemain){ //Author : Ali
+
+// Nama Modul : PenentuUrutan
+// Jenis Modul : Function
+// Deskripsi : Modul untuk menentukan urutan para pemain untuk bermain secara random.
+// Input : Jumlah Pemain
+// Output : Tampilan urutan pemain yang telah ditentukan secara random sesuai dengan jumlah pemain.
+// Modul Pemanggil : Function_StartGame()
+// Modul yang Dipanggil : -
+// Author : Ali
+int * PenentuUrutan(int urutanpemain[], int jumlahpemain){
 	int a[jumlahpemain], i, urutan;
 	int urutanakhir = 0;
 	urutan = (rand()%jumlahpemain)+1;
@@ -413,7 +487,16 @@ int * PenentuUrutan(int urutanpemain[], int jumlahpemain){ //Author : Ali
     getch();
     return a;
 }
-void Opening(){  //Author : Farra
+
+// Nama Modul : Opening
+// Jenis Modul : Procedure
+// Deskripsi : Modul untuk menampilkan berupa sambutan selamat datang dan informasi mengenai kreator kepada user pada layar
+// Initial State : Layar Kosong
+// Final State : Menampilkan tampilan pembuka sebagai sambutan selamat datang pada user dan informasi mengenai kreator pada layar
+// Modul Pemanggil : Function_Main()
+// Modul yang Dipanggil : Procedure_GoToXY(), Procedure_PenentuWarna()
+// Author : Farra
+void Opening(){
 	int i,j,k;
 	int d=10;
 	GoToXY(75, 6);
@@ -538,7 +621,16 @@ void Opening(){  //Author : Farra
 	system("cls");
 	PenentuWarna(7);
 }
-void Instruction(){ //Author : Farra
+
+// Nama Modul : Instruction
+// Jenis Modul : Procedure
+// Deskripsi : Modul untuk menampilkan aturan bermain.
+// Initial State : Layar Kosong
+// Final State : Tampil nya instruksi/aturan bermain.
+// Modul Pemanggil : Procedure_MainMenu()
+// Modul yang Dipanggil : Procedure_PenentuWarna(), Procedure_GoToXY, Function_StartGame
+// Author : Farra
+void Instruction(){
 	system("cls");
 	PenentuWarna(6);
 	FILE *instruksi;
@@ -563,7 +655,16 @@ void Instruction(){ //Author : Farra
 	PenentuWarna(7);
 	StartGame();
 }
-void TampilPapanPermainan(){ // Author : Farra & Ali
+
+// Nama Modul : TampilPapanPermainan
+// Jenis Modul : Procedure
+// Deskripsi : Modul untuk menampilkan papan permainan.
+// Initial State : Layar Kosong 
+// Final State : Tampilnya papan permainan
+// Modul Pemanggil : Function_StartGame()
+// Modul yang Dipanggil : Procedure_PenentuWarna(), Procedure_GoToXY()
+// Author : Farra & Ali
+void TampilPapanPermainan(){
 	int i;
 	system("cls");
 	for (i=0; i<=8; i+=8){
@@ -776,7 +877,16 @@ void TampilPapanPermainan(){ // Author : Farra & Ali
 	  
 	
 }
-MainMenu(){ //Author : Farra
+
+// Nama Modul : MainMenu
+// Jenis Modul : Function
+// Deskripsi : Program awal yang akan menampilkan pilihan untuk Start Game, Instruction, dan Exit.User menginput huruf S untuk pilihan Start Game(akan memanggil modul jumlahpemain), huruf I untuk pilihan Instruction(akan memanggil modul instruction), dan huruf E untuk exit(akan memanggil modul exit).
+// Input : User menekan tombol enter
+// Output : Tampilnya pilihan "Start Game", "Instruction", dan "Exit"
+// Modul Pemanggil : Function_Main()
+// Modul yang Dipanggil : Function_StartGame(), Prosedur_Instruction(), Function_Exit(), Procedure_PenentuWara(), & Procedure_GoToXY
+// Author : Farra
+MainMenu(){
 	int i;
 	PenentuWarna(6);
 	GoToXY(80.5, 10);
@@ -799,7 +909,16 @@ MainMenu(){ //Author : Farra
 		}
 		PenentuWarna(7);
 }
-int JumlahPemain(){ // Author : Farra
+
+// Nama Modul : Jumlah Pemain
+// Jenis Modul : Function
+// Deskripsi : Modul yang berperan sebagai program utama yang akan menampilkan pilihan untuk bermain dengan berapa pemain (1, 2, atau 3 komputer).
+// Input : Layar Kosong
+// Output : Tampilnya pilihan jumlah pemain komputer untuk lawan dari user, yaitu 1 pemain, 2 pemain, dan 3 pemain.
+// Modul Pemanggil : Function_StartGame()
+// Modul yang dipanggil : -
+// Author : Farra
+int JumlahPemain(){
 	int j=60;
 	PenentuWarna(4);
 	GoToXY(j, 20);
@@ -816,7 +935,15 @@ int JumlahPemain(){ // Author : Farra
 	return jumlahpemain;
 }
 
-void initial(int jumlahpemain){ //Author : Ali
+// Nama Modul : Initial
+// Jenis Modul :Procedure
+// Deskripsi : Modul untuk menentukan perbedaan pemain (digunakan untuk membedakan bidak dan home base setiap pemain).
+// Initial State : Pemain belum mendapatkan warna
+// Final State :  Tampilan warna untuk masing-masing pemain.
+// Modul Pemanggil : Function_StartGame()
+// Modul yang Dipanggil : -
+// Author : Ali
+void initial(int jumlahpemain){
 	int j, i;
 	for (j=0; j<jumlahpemain; j++){	
 		for(i=0; i<4; i++){
@@ -869,7 +996,16 @@ void initial(int jumlahpemain){ //Author : Ali
 		pemain[3].posisibidak[3].Y = 40;
 	}
 }
-void printbidak(int jumlahpemain){ //Author : Ali
+
+// Nama Modul : PrintBidak
+// Jenis Modul : Procedure
+// Deskripsi : Modul untuk menampilkan bidak pada papan permainan.
+// Initial state : Bidak belum ditampilkan pada papan permainan.
+// Final State : Bidak sudah ditampilkan pada papan permainan.
+// Modul Pemanggil : Procedure_StartGame()
+// Modul yang Dipanggil : Function_JumlahPemain(), Procedure_GoToXY & Function_PenentuWarna()
+// Author : Farra & Ali
+void printbidak(int jumlahpemain){
 	int j, i;
 	for(j=0; j<jumlahpemain+1; j++){
 		for(i=0; i<4; i++){
@@ -880,8 +1016,479 @@ void printbidak(int jumlahpemain){ //Author : Ali
 		}
 	}
 }
-StartGame(){ //Author : Farra & Ali
-	int jumlahpemain, penentuurutan, i, n;
+
+// Nama Modul : PlayerUser
+// Jenis Modul : Procedure
+// Deskripsi : Modul untuk mengoprasikan bidak user 
+// Initial state : Bidak masih beradaa dalam kondisi awal baik di home base maupun di lintasan
+// Final State : Bidak sudah berpindah posisi
+// Modul Pemanggil : Prosedur_StartGame()
+// Modul yang Dipanggil : Procedure_PenggerakBidak(), Procedure_KeluarHomeBase(), Procedure_PembunuhBidak(), Procedure_PilihBidak(), Procedure_RandomDadu(), Procedure_GoToXY(), Procedure_PenentuWarna(), & Function_PenentuWarna()
+// Author : Farra & Ali
+void playeruser(int playerke){
+	int n, m, nomorbidak, dadu = rand()%6 + 1;
+				bool semuabidakdibase = true, sudahmilih = false , adabidakdilintasan = false, adabidakdibase = false;
+				for (m=0; m<4; m++){
+					if (pemain[playerke].bidakdihomebase[m] == false){
+						semuabidakdibase = false;
+						break;
+					}
+				}
+				for (m=0; m<4; m++){
+					if (pemain[playerke].bidakdihomebase[m] == true){
+						adabidakdibase = true;
+						break;
+					}
+				}
+				for (m=0; m<4; m++){
+					if((!(pemain[playerke].bidakdihomebase[m]) && !(pemain[playerke].bidakdifinish[m])) && !((pemain[playerke].posisibidak[m].X+(dadu*7) > 56) && (21<= pemain[playerke].posisibidak[m].X) && (pemain[playerke].posisibidak[m].X<56) && (pemain[playerke].posisibidak[m].Y == 24)) ){
+						adabidakdilintasan = true;
+						break;
+					}
+				}
+				PenentuWarna(4);
+				GoToXY(120, 4); printf("Tekan enter untuk mengocok dadu...");
+				PenentuWarna(7);
+				getch();
+				int TampilDadu01, waktudadu;
+				for(TampilDadu01=0; TampilDadu01<=dadu;TampilDadu01++){
+					RandomDadu(TampilDadu01);
+				for(waktudadu=0; waktudadu<=90000000; waktudadu++){
+			 		}
+				}
+			
+				GoToXY(120, 4); printf("Kamu mendapat angka dadu %d             ", dadu);
+				if(!adabidakdilintasan && dadu<6){
+					GoToXY(120, 5); printf("Kamu tidak bisa mengeluarkan/menjalankan bidak\n");
+					GoToXY(120, 6); system("pause");
+				}else if (!adabidakdilintasan && !adabidakdibase && dadu<=6){
+					GoToXY(120, 5); printf("Komputer 1 tidak bisa menjalankan bidak\n");
+					sleep(2);
+				}else if(!adabidakdilintasan && dadu==6){
+					PenentuWarna(4);
+					GoToXY(120, 5); printf("Pilih angka bidak yang mau dikeluarkan (1-4) (error2)");
+					PenentuWarna(7);
+					PilihBidak(&nomorbidak);
+					bool tidakboleh0102 = true;
+					while(tidakboleh0102){
+						if(pemain[playerke].bidakdihomebase[nomorbidak-1] == true){
+							tidakboleh0102 = false;
+						}else{
+							PenentuWarna(4);
+							GoToXY(120, 5); printf("Pilih bidak lain...             ");
+							PenentuWarna(7);
+							PilihBidak(&nomorbidak);
+						}
+					}
+					KeluarHomeBase(playerke, nomorbidak-1);
+				}else if(adabidakdilintasan && dadu==6){
+					PenentuWarna(4);
+					GoToXY(120, 5); printf("Pilih angka bidak (1-4) ");
+					PenentuWarna(7);
+					PilihBidak(&nomorbidak);
+					
+					if (pemain[playerke].bidakdihomebase[nomorbidak-1] == true){
+						KeluarHomeBase(playerke, nomorbidak-1);
+					}else{
+						if((pemain[playerke].posisibidak[nomorbidak-1].X+(dadu*7) > 56) && (21<= pemain[playerke].posisibidak[nomorbidak-1].X) && (pemain[playerke].posisibidak[nomorbidak-1].X<56) && (pemain[playerke].posisibidak[nomorbidak-1].Y == 24)){	
+							bool tidakbisa = true;
+							while (tidakbisa){
+								PenentuWarna(4);
+								GoToXY(120, 5); printf("Pilih bidak lain...                 ");
+								PenentuWarna(7);
+								PilihBidak(&nomorbidak);
+								if((pemain[playerke].posisibidak[nomorbidak-1].X+(dadu*7) > 56) && (21<= pemain[playerke].posisibidak[nomorbidak-1].X) && (pemain[playerke].posisibidak[nomorbidak-1].X<56) && (pemain[playerke].posisibidak[nomorbidak-1].Y == 24)){
+								}else{
+									tidakbisa = false;
+								}
+							}
+						}
+						for(n=0; n<dadu;n++){
+							PenggerakBidak(playerke, nomorbidak-1, dadu);
+						}
+					}	
+				}else if(adabidakdilintasan && dadu<6){
+					PenentuWarna(4);
+					GoToXY(120, 5); printf("Pilih bidak yang mau dijalankan ");
+					PenentuWarna(7);
+					PilihBidak(&nomorbidak);
+					
+					bool boleh = false;
+					
+					while(!boleh){
+						if ((pemain[playerke].bidakdihomebase[nomorbidak-1] == true || pemain[playerke].bidakdifinish[nomorbidak-1] == true) || ((pemain[playerke].posisibidak[nomorbidak-1].X+(dadu*7) > 56) && (21<= pemain[playerke].posisibidak[nomorbidak-1].X) && (pemain[playerke].posisibidak[nomorbidak-1].X<56) && (pemain[playerke].posisibidak[nomorbidak-1].Y == 24))){
+							PenentuWarna(4);
+							GoToXY(120, 5); printf("Pilih bidak lain...             ");
+							PenentuWarna(7);
+							PilihBidak(&nomorbidak);
+						}else{
+							boleh = true;
+						}
+					}
+					for(n=0; n<dadu;n++){
+						PenggerakBidak(playerke, nomorbidak-1, dadu);
+					}
+				}
+				PembunuhBidak(playerke, nomorbidak-1);
+}
+
+// Nama Modul : PlayerKomputer1
+// Jenis Modul : Procedure
+// Deskripsi : Modul untuk mengoprasikan bidak komputer1 
+// Initial state : Bidak masih berada dalam kondisi awal baik di home base maupun di lintasan
+// Final State : Bidak sudah berpindah posisi
+// Modul Pemanggil : Prosedur_StartGame()
+// Modul yang Dipanggil : Procedure_PenggerakBidak(), Procedure_KeluarHomeBase(), Procedure_PembunuhBidak(), Procedure_RandomDadu(), Procedure_GoToXY(), Procedure_PenentuWarna(), & Function_PenentuWarna()
+// Author : Farra & Ali
+void playerkomputer1(int playerke){
+	int n, m, nomorbidak, dadu = rand()%6 + 1;
+				bool semuabidakdibase = true, sudahmilih = false , adabidakdilintasan = false, adabidakdibase = false;
+				for (m=0; m<4; m++){
+					if (pemain[playerke].bidakdihomebase[m] == false){
+						semuabidakdibase = false;
+						break;
+					}
+				}
+				for (m=0; m<4; m++){
+					if (pemain[playerke].bidakdihomebase[m] == true){
+						adabidakdibase = true;
+						break;
+					}
+				}
+				for (m=0; m<4; m++){
+					if((!(pemain[playerke].bidakdihomebase[m]) && !(pemain[playerke].bidakdifinish[m])) && !((pemain[playerke].posisibidak[m].Y+(dadu*3) > 21) && (6<=pemain[playerke].posisibidak[m].Y) && (pemain[playerke].posisibidak[m].Y<21) && (playerke==1) && (pemain[playerke].posisibidak[m].X == 63)) ){
+						adabidakdilintasan = true;
+						break;
+					}
+				}
+				PenentuWarna(4);
+				GoToXY(120, 4); printf("Komputer mengocok dadu...");
+				sleep(2);
+				PenentuWarna(7);
+				int TampilDadu01, waktudadu;
+				for(TampilDadu01=0; TampilDadu01<=dadu;TampilDadu01++){
+					RandomDadu(TampilDadu01);
+				for(waktudadu=0; waktudadu<=90000000; waktudadu++){
+			 		}
+				}
+				GoToXY(120, 4); printf("Komputer 1 mendapat angka dadu %d         ", dadu);
+				sleep(2);
+				if(!adabidakdilintasan && dadu<6){
+					GoToXY(120, 5); printf("Komputer 1 tidak bisa menjalankan bidak\n");
+					sleep(2);
+				}else if (!adabidakdilintasan && !adabidakdibase && dadu<=6){
+					GoToXY(120, 5); printf("Komputer 1 tidak bisa menjalankan bidak\n");
+					sleep(2);
+				}else if(!adabidakdilintasan && dadu==6){
+					PenentuWarna(4);
+					GoToXY(120, 5); printf("Komputer 1 memilih bidak (1-4)");
+					sleep(2);
+					PenentuWarna(7);
+					nomorbidak = rand()%4+1;
+					
+					bool tidakboleh0102 = true;
+					while(tidakboleh0102){
+						if(pemain[playerke].bidakdihomebase[nomorbidak-1] == true){
+							tidakboleh0102 = false;
+						}else{
+							nomorbidak = rand()%4+1;
+						}
+					}
+					GoToXY(120, 5); printf("Komputer 1 memilih bidak (1-4) %d", nomorbidak);
+					sleep(2);
+					KeluarHomeBase(playerke, nomorbidak-1);
+				}else if(adabidakdilintasan && dadu==6){
+					PenentuWarna(4);
+					GoToXY(120, 5); printf("Komputer 1 memilih angka bidak (1-4) ");
+					sleep(2);
+					PenentuWarna(7);
+					nomorbidak = rand()%4+1;
+					if (pemain[playerke].bidakdihomebase[nomorbidak-1] == true){
+						KeluarHomeBase(playerke, nomorbidak-1);
+					}else{
+						if(((pemain[playerke].posisibidak[nomorbidak-1].Y+(dadu*3) > 21) && (6<=pemain[playerke].posisibidak[nomorbidak-1].Y) && (pemain[playerke].posisibidak[nomorbidak-1].Y<21) && (playerke==1) && (pemain[playerke].posisibidak[nomorbidak-1].X == 63))){	
+							bool tidakbisa = true;
+							while (tidakbisa){
+								nomorbidak = rand()%4+1;
+								if(((pemain[playerke].posisibidak[nomorbidak-1].Y+(dadu*3) > 21) && (6<=pemain[playerke].posisibidak[nomorbidak-1].Y) && (pemain[playerke].posisibidak[nomorbidak-1].Y<21) && (playerke==1) && (pemain[playerke].posisibidak[nomorbidak-1].X == 63))){
+								}else{
+									tidakbisa = false;
+								}
+							}
+						}
+						GoToXY(120, 5); printf("Komputer 1 memilih bidak (1-4) %d", nomorbidak);
+						sleep(2);
+						for(n=0; n<dadu;n++){
+							PenggerakBidak(playerke, nomorbidak-1, dadu);
+						}
+					}	
+				}else if(adabidakdilintasan && dadu<6){
+					PenentuWarna(4);
+					GoToXY(120, 5); printf("Komputer 1 memilih angka bidak (1-4)");
+					sleep(2);
+					PenentuWarna(7);
+					nomorbidak = rand()%4+1;
+					
+					bool boleh = false;
+					
+					while(!boleh){
+						if ((pemain[playerke].bidakdihomebase[nomorbidak-1] == true || pemain[playerke].bidakdifinish[nomorbidak-1] == true) || ((pemain[playerke].posisibidak[nomorbidak-1].Y+(dadu*3) > 21) && (6<=pemain[playerke].posisibidak[nomorbidak-1].Y) && (pemain[playerke].posisibidak[nomorbidak-1].Y<21) && (playerke==1) && (pemain[playerke].posisibidak[nomorbidak-1].X == 63))){
+							nomorbidak = rand()%4+1;
+						}else{
+							boleh = true;
+						}
+					}
+					GoToXY(120, 5); printf("Komputer 1 memilih bidak (1-4) %d", nomorbidak);
+					sleep(2);
+					for(n=0; n<dadu;n++){
+						PenggerakBidak(playerke, nomorbidak-1, dadu);
+					}
+				}
+				PembunuhBidak(playerke, nomorbidak-1);
+}
+
+// Nama Modul : PlayerKomputer2
+// Jenis Modul : Procedure
+// Deskripsi : Modul untuk mengoprasikan bidak komputer2
+// Initial state : Bidak masih berada dalam kondisi awal baik di home base maupun di lintasan
+// Final State : Bidak sudah berpindah posisi
+// Modul Pemanggil : Prosedur_StartGame()
+// Modul yang Dipanggil : Procedure_PenggerakBidak(), Procedure_KeluarHomeBase(), Procedure_PembunuhBidak(), Procedure_PilihBidak(), Procedure_RandomDadu(), Procedure_GoToXY(), Procedure_PenentuWarna(), & Function_PenentuWarna()
+// Author : Farra & Ali
+void playerkomputer2(int playerke){
+	int n, m, nomorbidak, dadu = rand()%6 + 1;
+				bool semuabidakdibase = true, sudahmilih = false , adabidakdilintasan = false, adabidakdibase = false;
+				for (m=0; m<4; m++){
+					if (pemain[playerke].bidakdihomebase[m] == false){
+						semuabidakdibase = false;
+						break;
+					}
+				}
+				for (m=0; m<4; m++){
+					if (pemain[playerke].bidakdihomebase[m] == true){
+						adabidakdibase = true;
+						break;
+					}
+				}
+				for (m=0; m<4; m++){
+					if((!(pemain[playerke].bidakdihomebase[m]) && !(pemain[playerke].bidakdifinish[m])) && !((pemain[playerke].posisibidak[m].X-(dadu*7) < 70) && (70<pemain[playerke].posisibidak[m].X) && (pemain[playerke].posisibidak[m].X<=105) && (playerke==2) && (pemain[playerke].posisibidak[m].Y == 24)) ){
+						adabidakdilintasan = true;
+						break;
+					}
+				}
+				PenentuWarna(4);
+				GoToXY(120, 4); printf("Komputer 2 mengocok dadu...");
+				sleep(2);
+				PenentuWarna(7);
+				int TampilDadu01, waktudadu;
+				for(TampilDadu01=0; TampilDadu01<=dadu;TampilDadu01++){
+					RandomDadu(TampilDadu01);
+				for(waktudadu=0; waktudadu<=90000000; waktudadu++){
+			 		}
+				}
+				GoToXY(120, 4); printf("Komputer 2 mendapat angka dadu %d         ", dadu);
+				sleep(2);
+				if(!adabidakdilintasan && dadu<6){
+					GoToXY(120, 5); printf("Komputer 2 tidak bisa menjalankan bidak\n");
+					sleep(2);
+				}else if (!adabidakdilintasan && !adabidakdibase && dadu<=6){
+					GoToXY(120, 5); printf("Komputer 2 tidak bisa menjalankan bidak\n");
+					sleep(2);
+				}else if(!adabidakdilintasan && dadu==6){
+					PenentuWarna(4);
+					GoToXY(120, 5); printf("Komputer 2 memilih bidak (1-4)");
+					sleep(2);
+					PenentuWarna(7);
+					nomorbidak = rand()%4+1;
+					
+					bool tidakboleh0102 = true;
+					while(tidakboleh0102){
+						if(pemain[playerke].bidakdihomebase[nomorbidak-1] == true){
+							tidakboleh0102 = false;
+						}else{
+							nomorbidak = rand()%4+1;
+						}
+					}
+					GoToXY(120, 5); printf("Komputer 2 memilih bidak (1-4) %d ", nomorbidak);
+					sleep(2);
+					KeluarHomeBase(playerke, nomorbidak-1);
+				}else if(adabidakdilintasan && dadu==6){
+					PenentuWarna(4);
+					GoToXY(120, 5); printf("Komputer 2 memilih bidak (1-4) ");
+					sleep(2);
+					PenentuWarna(7);
+					nomorbidak = rand()%4+1;
+					if (pemain[playerke].bidakdihomebase[nomorbidak-1] == true){
+						KeluarHomeBase(playerke, nomorbidak-1);
+					}else{
+						if(((pemain[playerke].posisibidak[nomorbidak-1].X-(dadu*7) < 70) && (70<pemain[playerke].posisibidak[nomorbidak-1].X) && (pemain[playerke].posisibidak[nomorbidak-1].X<=105) && (playerke==2) && (pemain[playerke].posisibidak[nomorbidak-1].Y == 24))){	
+							bool tidakbisa = true;
+							while (tidakbisa){
+								nomorbidak = rand()%4+1;
+								if(((pemain[playerke].posisibidak[nomorbidak-1].X-(dadu*7) < 70) && (70<pemain[playerke].posisibidak[nomorbidak-1].X) && (pemain[playerke].posisibidak[nomorbidak-1].X<=105) && (playerke==2) && (pemain[playerke].posisibidak[nomorbidak-1].Y == 24))){
+								}else{
+									tidakbisa = false;
+								}
+							}
+						}
+						GoToXY(120, 5); printf("Komputer 2 memilih bidak (1-4) %d", nomorbidak);
+						sleep(2);
+						for(n=0; n<dadu;n++){
+							PenggerakBidak(playerke, nomorbidak-1, dadu);
+						}
+					}	
+				}else if(adabidakdilintasan && dadu<6){
+					PenentuWarna(4);
+					GoToXY(120, 5); printf("Komputer 2 memilih bidak (1-4)");
+					sleep(2);
+					PenentuWarna(7);
+					nomorbidak = rand()%4+1;
+					
+					bool boleh = false;
+					
+					while(!boleh){
+						if ((pemain[playerke].bidakdihomebase[nomorbidak-1] == true || pemain[playerke].bidakdifinish[nomorbidak-1] == true) || ((pemain[playerke].posisibidak[nomorbidak-1].X-(dadu*7) < 70) && (70<pemain[playerke].posisibidak[nomorbidak-1].X) && (pemain[playerke].posisibidak[nomorbidak-1].X<=105) && (playerke==2) && (pemain[playerke].posisibidak[nomorbidak-1].Y == 24))){
+							nomorbidak = rand()%4+1;
+						}else{
+							boleh = true;
+						}
+					}
+					GoToXY(120, 5); printf("Komputer 2 bidak (1-4) %d", nomorbidak);
+					sleep(2);
+					for(n=0; n<dadu;n++){
+						PenggerakBidak(playerke, nomorbidak-1, dadu);
+					}
+				}
+				PembunuhBidak(playerke, nomorbidak-1);
+}
+
+// Nama Modul : PlayerKomputer3
+// Jenis Modul : Procedure
+// Deskripsi : Modul untuk mengoprasikan bidak komputer3
+// Initial state : Bidak masih berada dalam kondisi awal baik di home base maupun di lintasan
+// Final State : Bidak sudah berpindah posisi
+// Modul Pemanggil : Prosedur_StartGame()
+// Modul yang Dipanggil : Procedure_PenggerakBidak(), Procedure_KeluarHomeBase(), Procedure_PembunuhBidak(), Procedure_PilihBidak(), Procedure_RandomDadu(), Procedure_GoToXY(), Procedure_PenentuWarna(), & Function_PenentuWarna()
+// Author : Farra & Ali
+void playerkomputer3(int playerke){
+	int n, m, nomorbidak, dadu = rand()%6 + 1;
+				bool semuabidakdibase = true, sudahmilih = false , adabidakdilintasan = false, adabidakdibase = false;
+				for (m=0; m<4; m++){
+					if (pemain[playerke].bidakdihomebase[m] == false){
+						semuabidakdibase = false;
+						break;
+					}
+				}
+				for (m=0; m<4; m++){
+					if (pemain[playerke].bidakdihomebase[m] == true){
+						adabidakdibase = true;
+						break;
+					}
+				}
+				for (m=0; m<4; m++){
+					if((!(pemain[playerke].bidakdihomebase[m]) && !(pemain[playerke].bidakdifinish[m])) && !((pemain[playerke].posisibidak[m].Y-(dadu*3) < 27) && (27<pemain[playerke].posisibidak[m].Y) && (pemain[playerke].posisibidak[m].Y<=42) && (playerke==3) && (pemain[playerke].posisibidak[m].X == 63)) ){
+						adabidakdilintasan = true;
+						break;
+					}
+				}
+				PenentuWarna(4);
+				GoToXY(120, 4); printf("Komputer 3 mengocok dadu...");
+				sleep(2);
+				PenentuWarna(7);
+				int TampilDadu01, waktudadu;
+				for(TampilDadu01=0; TampilDadu01<=dadu;TampilDadu01++){
+					RandomDadu(TampilDadu01);
+				for(waktudadu=0; waktudadu<=90000000; waktudadu++){
+			 		}
+				}
+				GoToXY(120, 4); printf("Komputer 3 mendapat angka dadu %d         ", dadu);
+				sleep(2);
+				if(!adabidakdilintasan && dadu<6){
+					GoToXY(120, 5); printf("Komputer 3 tidak bisa menjalankan bidak\n");
+					sleep(2);
+				}else if (!adabidakdilintasan && !adabidakdibase && dadu<=6){
+					GoToXY(120, 5); printf("Komputer 3 tidak bisa menjalankan bidak\n");
+					sleep(2);
+				}else if(!adabidakdilintasan && dadu==6){
+					PenentuWarna(4);
+					GoToXY(120, 5); printf("Komputer 3 memilih bidak (1-4)");
+					sleep(2);
+					PenentuWarna(7);
+					nomorbidak = rand()%4+1;
+					
+					bool tidakboleh0102 = true;
+					while(tidakboleh0102){
+						if(pemain[playerke].bidakdihomebase[nomorbidak-1] == true){
+							tidakboleh0102 = false;
+						}else{
+							nomorbidak = rand()%4+1;
+						}
+					}
+					GoToXY(120, 5); printf("Komputer 3 memilih bidak (1-4) %d ", nomorbidak);
+					sleep(2);
+					KeluarHomeBase(playerke, nomorbidak-1);
+				}else if(adabidakdilintasan && dadu==6){
+					PenentuWarna(4);
+					GoToXY(120, 5); printf("Komputer 3 memilih bidak (1-4) ");
+					sleep(2);
+					PenentuWarna(7);
+					nomorbidak = rand()%4+1;
+					if (pemain[playerke].bidakdihomebase[nomorbidak-1] == true){
+						KeluarHomeBase(playerke, nomorbidak-1);
+					}else{
+						if(((pemain[playerke].posisibidak[nomorbidak-1].Y-(dadu*3) < 27) && (27<pemain[playerke].posisibidak[nomorbidak-1].Y) && (pemain[playerke].posisibidak[nomorbidak-1].Y<=42) && (playerke==3) && (pemain[playerke].posisibidak[nomorbidak-1].X == 63))){	
+							bool tidakbisa = true;
+							while (tidakbisa){
+								nomorbidak = rand()%4+1;
+								if(((pemain[playerke].posisibidak[nomorbidak-1].Y-(dadu*3) < 27) && (27<pemain[playerke].posisibidak[nomorbidak-1].Y) && (pemain[playerke].posisibidak[nomorbidak-1].Y<=42) && (playerke==3) && (pemain[playerke].posisibidak[nomorbidak-1].X == 63))){
+								}else{
+									tidakbisa = false;
+								}
+							}
+						}
+						GoToXY(120, 5); printf("Komputer 3 memilih bidak (1-4) %d", nomorbidak);
+						sleep(2);
+						for(n=0; n<dadu;n++){
+							PenggerakBidak(playerke, nomorbidak-1, dadu);
+						}
+					}	
+				}else if(adabidakdilintasan && dadu<6){
+					PenentuWarna(4);
+					GoToXY(120, 5); printf("Komputer 3 memilih bidak (1-4)");
+					sleep(2);
+					PenentuWarna(7);
+					nomorbidak = rand()%4+1;
+					
+					bool boleh = false;
+					
+					while(!boleh){
+						if ((pemain[playerke].bidakdihomebase[nomorbidak-1] == true || pemain[playerke].bidakdifinish[nomorbidak-1] == true) || ((pemain[playerke].posisibidak[nomorbidak-1].Y-(dadu*3) < 27) && (27<pemain[playerke].posisibidak[nomorbidak-1].Y) && (pemain[playerke].posisibidak[nomorbidak-1].Y<=42) && (playerke==3) && (pemain[playerke].posisibidak[nomorbidak-1].X == 63))){
+							nomorbidak = rand()%4+1;
+						}else{
+							boleh = true;
+						}
+					}
+					GoToXY(120, 5); printf("Komputer 3 bidak (1-4) %d", nomorbidak);
+					sleep(2);
+					for(n=0; n<dadu;n++){
+						PenggerakBidak(playerke, nomorbidak-1, dadu);
+					}
+				}
+				PembunuhBidak(playerke, nomorbidak-1);
+}
+
+
+
+// Nama Modul : Start Game
+// Jenis Modul : Function
+// Deskripsi : Modul utama (sebagai wadah untuk bermain) dalam permainan Ludo. Modul ini akan memanggil beberapa modul yang berperan dalam permainan.
+// Input : Kondisi layar masih di Main Menu
+// Output : Modul Prosedur_JumlahPemain() terpanggil
+// Modul Pemanggil : Function_MainMenu()
+// Modul yang Dipanggil : Function_JumlahPemain(), Procedure_Initial(), Function_PenentuUrutan(), Procedure_TampilPapanPermainan(), Procedure_PenentuPemenang, Procedure_GameOver, Procedure_PlayerUser, Procedure_PlayerKomputer1, Procedure_PlayerKomputer2, Procedure_PlayerKomputer3, Procedure_GameOver & Procedure_PrintBidak()
+// Author : Farra & Ali
+StartGame(){
+	int jumlahpemain, i;
 	system("cls");
 	jumlahpemain = JumlahPemain();
 	int urutanpemain[jumlahpemain+1];
@@ -900,421 +1507,38 @@ StartGame(){ //Author : Farra & Ali
 	int pemenang;
 	int playerke = 0;
 	while (menang != true){
-		int giliran, m;
+		int giliran/*, m*/;
 		for (giliran=1; giliran<=jumlahpemain+1; giliran++){
 			TampilPapanPermainan();
 			printbidak(jumlahpemain+1);
-			int nomorbidak, jumlahbidakdilintasan = 0;
-			bool semuabidakdibase = true, sudahmilih = false , adabidakdilintasan = false;
-			int dadu = rand()%6 + 1;
 			if (pemain[playerke].giliran == giliran){
-				for (m=0; m<4; m++){
-					if (pemain[playerke].bidakdihomebase[m] == false){
-						semuabidakdibase = false;
-						break;
-					}
-				}
-				for (m=0; m<4; m++){
-					if (pemain[playerke].bidakdihomebase[m] == false && pemain[playerke].bidakdifinish[m] == false){
-						adabidakdilintasan = true;
-						break;
-					}
-				}
-				for (m=0; m<4; m++){
-					if (pemain[playerke].bidakdihomebase[m] == false && pemain[playerke].bidakdifinish[m] == false){
-						jumlahbidakdilintasan++;
-					}
-				}
-				PenentuWarna(4);
-				GoToXY(120, 4); printf("Tekan enter untuk mengocok dadu...");
-				PenentuWarna(7);
-				getch();
-				int TampilDadu01, waktudadu;
-				for(TampilDadu01=0; TampilDadu01<=dadu;TampilDadu01++){
-					RandomDadu(TampilDadu01);
-				for(waktudadu=0; waktudadu<=90000000; waktudadu++){
-			 		}
-				}
-			
-				GoToXY(120, 4); printf("Kamu mendapat angka dadu %d             ", dadu);
-				if(!adabidakdilintasan && (semuabidakdibase && dadu<6)){
-					GoToXY(120, 5); printf("Maaf Kamu tidak bisa mengeluarkan bidak...\n");
-					GoToXY(120, 6); system("pause");
-				}else if(!adabidakdilintasan && (!semuabidakdibase && dadu<6)){
-					GoToXY(120, 5); printf("Maaf Kamu tidak bisa mengeluarkan bidak...\n");
-					GoToXY(120, 6); system("pause");
-				}else if(!adabidakdilintasan && semuabidakdibase && dadu==6){
-					PenentuWarna(4);
-					GoToXY(120, 5); printf("Pilih angka bidak yang mau dikeluarkan (1-4) ");
-					PenentuWarna(7);
-					PilihBidak(&nomorbidak);
-					KeluarHomeBase(playerke, nomorbidak-1);
-				}else if(!semuabidakdibase && dadu==6){
-					PenentuWarna(4);
-					GoToXY(120, 5); printf("Pilih angka bidak (1-4) ");
-					PenentuWarna(7);
-					PilihBidak(&nomorbidak);//scanf("%d", &nomorbidak);
-					if (pemain[playerke].bidakdihomebase[nomorbidak-1] == true ){
-						KeluarHomeBase(playerke, nomorbidak-1);
-					}else{
-						if((jumlahbidakdilintasan<=1) && (pemain[playerke].posisibidak[nomorbidak-1].X+(dadu*7) > 56) && (21<= pemain[playerke].posisibidak[nomorbidak-1].X) && (pemain[playerke].posisibidak[nomorbidak-1].X<56) && (pemain[playerke].posisibidak[nomorbidak-1].Y == 24)){	
-							bool tidakbisa = true;
-							while (tidakbisa){
-								PenentuWarna(4);
-								GoToXY(120, 5); printf("Pilih bidak lain...                 ");
-								PenentuWarna(7);
-								PilihBidak(&nomorbidak);
-								if((pemain[playerke].posisibidak[nomorbidak-1].X+(dadu*7) > 56) && (21<= pemain[playerke].posisibidak[nomorbidak-1].X) && (pemain[playerke].posisibidak[nomorbidak-1].X<56) && (pemain[playerke].posisibidak[nomorbidak-1].Y == 24)){
-								}else{
-									tidakbisa = false;
-								}
-							}
-						}
-						for(n=0; n<dadu;n++){
-							PenggerakBidak(playerke, nomorbidak-1, dadu);
-						}
-					}	
-				}else if(adabidakdilintasan && !semuabidakdibase && dadu<6){
-					//code baru
-					PenentuWarna(4);
-					GoToXY(120, 5); printf("Pilih bidak yang mau dijalankan ");
-					PenentuWarna(7);
-					PilihBidak(&nomorbidak);
-					if (jumlahbidakdilintasan>1){
-						while((pemain[playerke].posisibidak[nomorbidak-1].X+(dadu*7) > 56) && (21<= pemain[playerke].posisibidak[nomorbidak-1].X) && (pemain[playerke].posisibidak[nomorbidak-1].X<56) && (pemain[playerke].posisibidak[nomorbidak-1].Y == 24)){
-							PenentuWarna(4);
-							GoToXY(120, 5); printf("Pilih bidak lain...             ");
-							PenentuWarna(7);
-							PilihBidak(&nomorbidak);
-						}
-					}
-					bool boleh = false;
-					while  (!boleh){
-						if (pemain[playerke].bidakdihomebase[nomorbidak-1] == false && pemain[playerke].bidakdifinish[nomorbidak-1] == false){
-							boleh = true;
-						}else{
-							PenentuWarna(4);
-							GoToXY(120, 5); printf("Pilih bidak lain...                ");
-							PenentuWarna(7);
-							PilihBidak(&nomorbidak);
-						}
-					}
-						if((pemain[playerke].posisibidak[nomorbidak-1].X+(dadu*7) > 56) && (21<= pemain[playerke].posisibidak[nomorbidak-1].X) && (pemain[playerke].posisibidak[nomorbidak-1].X<56) && (pemain[playerke].posisibidak[nomorbidak-1].Y == 24)){
-						}else if (pemain[playerke].bidakdihomebase[nomorbidak-1] == false ){
-						for(n=0; n<dadu;n++){
-							PenggerakBidak(playerke, nomorbidak-1, dadu);
-						}
-					}
-				}
-				PembunuhBidak(playerke, nomorbidak-1);
+				playeruser(0);
+				PenentuPemenang(&menang, &pemenang, 0);
 			}else if (pemain[playerke+1].giliran == giliran){
-				//Beginnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-				for (m=0; m<4; m++){
-					if (pemain[playerke+1].bidakdihomebase[m] == false){
-						semuabidakdibase = false;
-						break;
-					}
-				}
-				for (m=0; m<4; m++){
-					if (pemain[playerke+1].bidakdihomebase[m] == false && pemain[playerke+1].bidakdifinish[m] == false){
-						adabidakdilintasan = true;
-						break;
-					}
-				}
-				for (m=0; m<4; m++){
-					if (pemain[playerke+1].bidakdihomebase[m] == false && pemain[playerke+1].bidakdifinish[m] == false){
-						jumlahbidakdilintasan++;
-					}
-				}
-				GoToXY(120, 4); printf("Komputer 1 mengocok dadu...             ");
-				int TampilDadu01, waktudadu;
-				for(TampilDadu01=0; TampilDadu01<=dadu;TampilDadu01++){
-					RandomDadu(TampilDadu01);
-				for(waktudadu=0; waktudadu<=90000000; waktudadu++){
-			 		}
-				}
-				GoToXY(120, 4); printf("Komputer 1 mendapat angka dadu %d.......", dadu);
-				if(!adabidakdilintasan && (semuabidakdibase && dadu<6)){
-					GoToXY(120, 5); printf("Maaf Komputer 1 tidak bisa mengeluarkan bidak...\n");
-					sleep(2);
-				}else if(!adabidakdilintasan && (!semuabidakdibase && dadu<6)){
-					GoToXY(120, 5); printf("Maaf Komputer 1 tidak bisa mengeluarkan bidak...\n");
-					sleep(2);
-				}else if(!adabidakdilintasan && semuabidakdibase && dadu==6){
-					PenentuWarna(4);
-					GoToXY(120, 5); printf("Pilih angka bidak yang mau dikeluarkan (1-4) ");
-					PenentuWarna(7);
-					sleep(2);
-					nomorbidak = rand()%4+1;
-					KeluarHomeBase(playerke+1, nomorbidak-1);
-					GoToXY(120, 6); printf("Komputer 1 mengeluarkan bidak nomor %d", nomorbidak);
-					sleep(2);
-				}else if(!semuabidakdibase && dadu==6){
-					PenentuWarna(4);
-					GoToXY(120, 5); printf("Pilih angka bidak (1-4) ");
-					PenentuWarna(7);
-					sleep(2);
-					nomorbidak = rand()%4+1;
-					if (pemain[playerke+1].bidakdihomebase[nomorbidak-1] == true ){
-						KeluarHomeBase(playerke+1, nomorbidak-1);
-						GoToXY(120, 6); printf("Komputer 1 mengeluarkan bidak nomor %d", nomorbidak);
-						sleep(2);
-					}else{
-						if((jumlahbidakdilintasan<=1) && (pemain[playerke+1].posisibidak[nomorbidak-1].X+(dadu*7) > 56) && (21<= pemain[playerke+1].posisibidak[nomorbidak-1].X) && (pemain[playerke+1].posisibidak[nomorbidak-1].X<56) && (pemain[playerke+1].posisibidak[nomorbidak-1].Y == 24)){	
-							bool tidakbisa = true;
-							while (tidakbisa){
-								nomorbidak = rand()%4+1;
-								if((pemain[playerke].posisibidak[nomorbidak-1].Y+(dadu*3) > 24) && (6<=pemain[playerke+1].posisibidak[nomorbidak-1].Y) && (pemain[playerke+1].posisibidak[nomorbidak-1].Y<21) && (playerke==1) && (pemain[playerke+1].posisibidak[nomorbidak-1].X == 63)){
-								}else{
-									tidakbisa = false;
-								}
-							}
-						}
-						for(n=0; n<dadu;n++){
-							PenggerakBidak(playerke+1, nomorbidak-1, dadu);
-						}
-						GoToXY(120, 6); printf("Komputer 1 menggerakkan bidak nomor %d", nomorbidak);
-						sleep(2);
-					}	
-				}else if(adabidakdilintasan && !semuabidakdibase && dadu<6){
-					//code baru
-					PenentuWarna(4);
-					GoToXY(120, 5); printf("Pilih bidak yang mau dijalankan");
-					PenentuWarna(7);
-					nomorbidak = rand()%4+1;
-					if (jumlahbidakdilintasan>1){
-						while((pemain[playerke].posisibidak[nomorbidak-1].Y+(dadu*3) > 24) && (6<=pemain[playerke+1].posisibidak[nomorbidak-1].Y) && (pemain[playerke+1].posisibidak[nomorbidak-1].Y<21) && (playerke==1) && (pemain[playerke+1].posisibidak[nomorbidak-1].X == 63)){
-							nomorbidak = rand()%4+1;
-						}
-					}
-					bool boleh = false;
-					while  (!boleh){
-						if (pemain[playerke+1].bidakdihomebase[nomorbidak-1] == false && pemain[playerke+1].bidakdifinish[nomorbidak-1] == false){
-							boleh = true;
-						}else{
-							nomorbidak = rand()%4+1;
-						}
-					}
-						if((pemain[playerke].posisibidak[nomorbidak-1].Y+(dadu*3) > 24) && (6<=pemain[playerke+1].posisibidak[nomorbidak-1].Y) && (pemain[playerke+1].posisibidak[nomorbidak-1].Y<21) && (playerke==1) && (pemain[playerke+1].posisibidak[nomorbidak-1].X == 63)){
-						}else if (pemain[playerke+1].bidakdihomebase[nomorbidak-1] == false ){
-						for(n=0; n<dadu;n++){
-							PenggerakBidak(playerke+1, nomorbidak-1, dadu);
-							GoToXY(120, 6); printf("Komputer 1 menggerakkan bidak nomor %d", nomorbidak);
-							sleep(2);
-						}
-					}
-				}
-				PembunuhBidak(playerke+1, nomorbidak-1);
-				//Enddddddddddddddddddddddddddddddddddddddd
+				playerkomputer1(1);
+				PenentuPemenang(&menang, &pemenang, 1);
 			}else if (pemain[playerke+2].giliran == giliran){
-				//Beginnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-				for (m=0; m<4; m++){
-					if (pemain[playerke+2].bidakdihomebase[m] == false){
-						semuabidakdibase = false;
-						break;
-					}
-				}
-				for (m=0; m<4; m++){
-					if (pemain[playerke+2].bidakdihomebase[m] == false && pemain[playerke+2].bidakdifinish[m] == false){
-						adabidakdilintasan = true;
-						break;
-					}
-				}
-				for (m=0; m<4; m++){
-					if (pemain[playerke+2].bidakdihomebase[m] == false && pemain[playerke+2].bidakdifinish[m] == false){
-						jumlahbidakdilintasan++;
-					}
-				}
-				GoToXY(120, 4); printf("Komputer 2 mengocok dadu...             ");
-				int TampilDadu01, waktudadu;
-				for(TampilDadu01=0; TampilDadu01<=dadu;TampilDadu01++){
-					RandomDadu(TampilDadu01);
-				for(waktudadu=0; waktudadu<=90000000; waktudadu++){
-			 		}
-				}
-				GoToXY(120, 4); printf("Komputer 2 mendapat angka dadu %d.......", dadu);
-				if(!adabidakdilintasan && (semuabidakdibase && dadu<6)){
-					GoToXY(120, 5); printf("Maaf Komputer 2 tidak bisa mengeluarkan bidak...\n");
-					sleep(2);
-				}else if(!adabidakdilintasan && (!semuabidakdibase && dadu<6)){
-					GoToXY(120, 5); printf("Maaf Komputer 2 tidak bisa mengeluarkan bidak...\n");
-					sleep(2);
-				}else if(!adabidakdilintasan && semuabidakdibase && dadu==6){
-					PenentuWarna(4);
-					GoToXY(120, 5); printf("Pilih angka bidak yang mau dikeluarkan (1-4) ");
-					PenentuWarna(7);
-					sleep(2);
-					nomorbidak = rand()%4+1;
-					KeluarHomeBase(playerke+2, nomorbidak-1);
-					GoToXY(120, 6); printf("Komputer 2 mengeluarkan bidak nomor %d", nomorbidak);
-					sleep(2);
-				}else if(!semuabidakdibase && dadu==6){
-					PenentuWarna(4);
-					GoToXY(120, 5); printf("Pilih angka bidak (1-4) ");
-					PenentuWarna(7);
-					sleep(2);
-					nomorbidak = rand()%4+1;
-					if (pemain[playerke+2].bidakdihomebase[nomorbidak-1] == true ){
-						KeluarHomeBase(playerke+2, nomorbidak-1);
-						GoToXY(120, 6); printf("Komputer 2 mengeluarkan bidak nomor %d", nomorbidak);
-						sleep(2);
-					}else{
-						if((jumlahbidakdilintasan<=1) && (pemain[playerke+2].posisibidak[nomorbidak-1].X+(dadu*7) > 56) && (21<= pemain[playerke+2].posisibidak[nomorbidak-1].X) && (pemain[playerke+2].posisibidak[nomorbidak-1].X<56) && (pemain[playerke+2].posisibidak[nomorbidak-1].Y == 24)){	
-							bool tidakbisa = true;
-							while (tidakbisa){
-								nomorbidak = rand()%4+1;
-								if((pemain[playerke+2].posisibidak[nomorbidak-1].X-(dadu*7) < 70) && (70<pemain[playerke+2].posisibidak[nomorbidak-1].X) && (pemain[playerke+2].posisibidak[nomorbidak-1].X<=105) && (playerke==2) && (pemain[playerke+2].posisibidak[nomorbidak-1].Y == 24)){
-								}else{
-									tidakbisa = false;
-								}
-							}
-						}
-						for(n=0; n<dadu;n++){
-							PenggerakBidak(playerke+2, nomorbidak-1, dadu);
-						}
-						GoToXY(120, 6); printf("Komputer 2 menggerakkan bidak nomor %d", nomorbidak);
-						sleep(2);
-					}	
-				}else if(adabidakdilintasan && !semuabidakdibase && dadu<6){
-					//code baru
-					PenentuWarna(4);
-					GoToXY(120, 5); printf("Pilih bidak yang mau dijalankan");
-					PenentuWarna(7);
-					nomorbidak = rand()%4+1;
-					if (jumlahbidakdilintasan>1){
-						while((pemain[playerke+2].posisibidak[nomorbidak-1].X-(dadu*7) < 70) && (70<pemain[playerke+2].posisibidak[nomorbidak-1].X) && (pemain[playerke+2].posisibidak[nomorbidak-1].X<=105) && (playerke==2) && (pemain[playerke+2].posisibidak[nomorbidak-1].Y == 24)){
-							nomorbidak = rand()%4+1;
-						}
-					}
-					bool boleh = false;
-					while  (!boleh){
-						if (pemain[playerke+2].bidakdihomebase[nomorbidak-1] == false && pemain[playerke+2].bidakdifinish[nomorbidak-1] == false){
-							boleh = true;
-						}else{
-							nomorbidak = rand()%4+1;
-						}
-					}
-						if((pemain[playerke+2].posisibidak[nomorbidak-1].X-(dadu*7) < 70) && (70<pemain[playerke+2].posisibidak[nomorbidak-1].X) && (pemain[playerke+2].posisibidak[nomorbidak-1].X<=105) && (playerke==2) && (pemain[playerke+2].posisibidak[nomorbidak-1].Y == 24)){
-						}else if (pemain[playerke+2].bidakdihomebase[nomorbidak-1] == false ){
-						for(n=0; n<dadu;n++){
-							PenggerakBidak(playerke+2, nomorbidak-1, dadu);
-							GoToXY(120, 6); printf("Komputer 2 menggerakkan bidak nomor %d", nomorbidak);
-							sleep(2);
-						}
-					}
-				}
-				PembunuhBidak(playerke+2, nomorbidak-1);
-				//Enddddddddddddddddddddddddddddddddddddddd
+				playerkomputer2(2);
+				PenentuPemenang(&menang, &pemenang, 2);
 			}else if (pemain[playerke+3].giliran == giliran){
-				//Beginnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-				for (m=0; m<4; m++){
-					if (pemain[playerke+3].bidakdihomebase[m] == false){
-						semuabidakdibase = false;
-						break;
-					}
-				}
-				for (m=0; m<4; m++){
-					if (pemain[playerke+3].bidakdihomebase[m] == false && pemain[playerke+3].bidakdifinish[m] == false){
-						adabidakdilintasan = true;
-						break;
-					}
-				}
-				for (m=0; m<4; m++){
-					if (pemain[playerke+3].bidakdihomebase[m] == false && pemain[playerke+3].bidakdifinish[m] == false){
-						jumlahbidakdilintasan++;
-					}
-				}
-				GoToXY(120, 4); printf("Komputer 3 mengocok dadu...             ");
-				int TampilDadu01, waktudadu;
-				for(TampilDadu01=0; TampilDadu01<=dadu;TampilDadu01++){
-					RandomDadu(TampilDadu01);
-				for(waktudadu=0; waktudadu<=90000000; waktudadu++){
-			 		}
-				}
-				GoToXY(120, 4); printf("Komputer 3 mendapat angka dadu %d.......", dadu);
-				if(!adabidakdilintasan && (semuabidakdibase && dadu<6)){
-					GoToXY(120, 5); printf("Maaf Komputer 3 tidak bisa mengeluarkan bidak...\n");
-					sleep(2);
-				}else if(!adabidakdilintasan && (!semuabidakdibase && dadu<6)){
-					GoToXY(120, 5); printf("Maaf Komputer 3 tidak bisa mengeluarkan bidak...\n");
-					sleep(2);
-				}else if(!adabidakdilintasan && semuabidakdibase && dadu==6){
-					PenentuWarna(4);
-					GoToXY(120, 5); printf("Pilih angka bidak yang mau dikeluarkan (1-4) ");
-					PenentuWarna(7);
-					sleep(2);
-					nomorbidak = rand()%4+1;
-					KeluarHomeBase(playerke+3, nomorbidak-1);
-					GoToXY(120, 6); printf("Komputer 3 mengeluarkan bidak nomor %d", nomorbidak);
-					sleep(2);
-				}else if(!semuabidakdibase && dadu==6){
-					PenentuWarna(4);
-					GoToXY(120, 5); printf("Pilih angka bidak (1-4) ");
-					PenentuWarna(7);
-					sleep(2);
-					nomorbidak = rand()%4+1;
-					if (pemain[playerke+3].bidakdihomebase[nomorbidak-1] == true ){
-						KeluarHomeBase(playerke+3, nomorbidak-1);
-						GoToXY(120, 6); printf("Komputer 3 mengeluarkan bidak nomor %d", nomorbidak);
-						sleep(2);
-					}else{
-						if((pemain[playerke+3].posisibidak[nomorbidak-1].Y-(dadu*3) < 27) && (27<pemain[playerke+3].posisibidak[nomorbidak-1].Y) && (pemain[playerke+3].posisibidak[nomorbidak-1].Y<=42) && (playerke==3) && (pemain[playerke+3].posisibidak[nomorbidak-1].X == 63)){	
-							bool tidakbisa = true;
-							while (tidakbisa){
-								nomorbidak = rand()%4+1;
-								if((pemain[playerke+3].posisibidak[nomorbidak-1].Y-(dadu*3) < 27) && (27<pemain[playerke+3].posisibidak[nomorbidak-1].Y) && (pemain[playerke+3].posisibidak[nomorbidak-1].Y<=42) && (playerke==3) && (pemain[playerke+3].posisibidak[nomorbidak-1].X == 63)){
-								}else{
-									tidakbisa = false;
-								}
-							}
-						}
-						for(n=0; n<dadu;n++){
-							PenggerakBidak(playerke+3, nomorbidak-1, dadu);
-						}
-						GoToXY(120, 6); printf("Komputer 3 menggerakkan bidak nomor %d", nomorbidak);
-						sleep(2);
-					}	
-				}else if(adabidakdilintasan && !semuabidakdibase && dadu<6){
-					//code baru
-					PenentuWarna(4);
-					GoToXY(120, 5); printf("Pilih bidak yang mau dijalankan");
-					PenentuWarna(7);
-					nomorbidak = rand()%4+1;
-					if (jumlahbidakdilintasan>1){
-						while((pemain[playerke+3].posisibidak[nomorbidak-1].Y-(dadu*3) < 27) && (27<pemain[playerke+3].posisibidak[nomorbidak-1].Y) && (pemain[playerke+3].posisibidak[nomorbidak-1].Y<=42) && (playerke==3) && (pemain[playerke+3].posisibidak[nomorbidak-1].X == 63)){
-							nomorbidak = rand()%4+1;
-						}
-					}
-					bool boleh = false;
-					while  (!boleh){
-						if (pemain[playerke+3].bidakdihomebase[nomorbidak-1] == false && pemain[playerke+3].bidakdifinish[nomorbidak-1] == false){
-							boleh = true;
-						}else{
-							nomorbidak = rand()%4+1;
-						}
-					}
-						if((pemain[playerke+3].posisibidak[nomorbidak-1].Y-(dadu*3) < 27) && (27<pemain[playerke+3].posisibidak[nomorbidak-1].Y) && (pemain[playerke+3].posisibidak[nomorbidak-1].Y<=42) && (playerke==3) && (pemain[playerke+3].posisibidak[nomorbidak-1].X == 63)){
-						}else if (pemain[playerke+3].bidakdihomebase[nomorbidak-1] == false ){
-						for(n=0; n<dadu;n++){
-							PenggerakBidak(playerke+3, nomorbidak-1, dadu);
-							GoToXY(120, 6); printf("Komputer 1 menggerakkan bidak nomor %d", nomorbidak);
-							sleep(2);
-						}
-					}
-				}
-				PembunuhBidak(playerke+3, nomorbidak-1);
-				//Enddddddddddddddddddddddddddddddddddddddd
+				playerkomputer3(3);
+				PenentuPemenang(&menang, &pemenang, 3);
 			}
-			PenentuPemenang(&menang, &pemenang, giliran);//cek menang atau engga...
 		}
 	}
 	GameOver(pemenang);
 }
-	
-int main(){ // Author : Farra
-	PlaySound(TEXT("D:\\documents\\TEKNIK INFORMATIKA\\DDP\\TUGAS BESAR GAME LUDO\\El-Yu-Di-Oh FIX\\soundtrack.wav"), NULL, SND_FILENAME|SND_LOOP|SND_ASYNC);
+
+// Nama Modul : Main
+// Jenis Modul : Function
+// Deskripsi : Modul yang berfungsi sebagai wadah atau tempat dari modul lainnya.
+// Input : -
+// Output : -
+// Modul Pemanggil : -
+// Modul yang Dipanggil : Procedure_Opening() & Function_MainMenu()
+// Author : Farra
+int main(){
 	Opening();
 	MainMenu();
-	StartGame();
 	
 }
