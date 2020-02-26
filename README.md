@@ -1,5 +1,5 @@
 # El-Yu-Di-Oh Ludo Game
-1. Dekripsi Aplikasi:
+## Dekripsi Aplikasi:
 Deskripsi aplikasi adalah uraian mengenai aplikasi secara utuh. Bagian ini juga akan menjelaskan detail elemen-elemen dari permainan El-Yu-Di-Oh dan cara kerja aplikasi nya..
 a).	Pemain, permainan ini dimainkan oleh 2 jenis pemain, yaitu :
 1.	User(manusia), permainan El-Yu-Di-Oh ini hanya bisa dimainkan oleh satu user/ pemain manusia yang akan melawan pemain komputer.
